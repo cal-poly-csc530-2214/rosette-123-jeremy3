@@ -1,5 +1,7 @@
 #lang rosette
 
+(require rackunit)
+
 (provide (all-defined-out))
 
 ; Takes as input a propositional formula and returns
@@ -7,8 +9,13 @@
 ; * 'CONTRADICTION if no interpretation I satisfies F;
 ; * 'CONTINGENCY if there are two interpretations I and I′ such that I satisfies F and I' does not.
 (define (classify F)
-  (sat? (solve (assert F))))
-  ;(error 'classify "not implemented yet!"))
+  (let ([m (solve (assert F))])
+    (cond
+      [(and (symbol? m) (symbol=? m 'CONTRADICTION)) 'CONTRADICTION]
+      [(unsat? m) 'CONTRADICTION]
+      [(= (length (hash-keys (model m))) 0) 'TAUTOLOGY]
+      [(sat? m) 'CONTINGENCY]
+      [else m])))
 
 (define-symbolic* p q r boolean?)
 
@@ -21,5 +28,9 @@
 ; (p ↔ q) ∧ (q → r) ∧ ¬(¬r → ¬p)
 (define f2 (&& (<=> p q) (=> q r) (! (=> (! r) (! q)))))
 
+(define f3 (|| p (! p)))
 
-(classify f0)
+(check-eq? (classify f0) 'CONTINGENCY)
+(check-eq? (classify f1) 'CONTINGENCY)
+(check-eq? (classify f2) 'CONTRADICTION)
+(check-eq? (classify f3) 'TAUTOLOGY)
