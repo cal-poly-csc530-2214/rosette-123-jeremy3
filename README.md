@@ -7,3 +7,7 @@ rosette-123-jeremy3 created by GitHub Classroom
 * Worked on problem 1 of homework 1, in classify.rkt. Refreshed myself on Racket (hash tables, and unit tests). Wrote the classify function along with some unit tests.
 
 * Started work on problem 2. Found out CNF means Conjunctive Normal Form. Read Wikipedia articles on CNF and Tseytin transformation.
+
+* Use the tseytin process I found on Wikipedia to apply it to the given sample problem (see tseitin.txt) and it seemed to work pretty well. The whole formula reduced to just !q & !p which is a huge improvement for solving satisfiability problems.
+
+

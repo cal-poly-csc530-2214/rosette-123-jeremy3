@@ -1,0 +1,40 @@
+All subformulas:
+x1 = p & q
+x2 = !r -> !x1
+
+T(phi) := x2 & (x2 <-> (!r -> !x1)) & (x1 <-> (p & q))
+
+# note using equals here but I mean triple line equals, "is equivalent to"
+x1 <-> p & q = (x1 -> (p & q)) & ((p & q) -> x1)
+	= (!x1 | (p & q)) & (!(p & q) | x1)
+	= (!x1 | p) & (!x1 | q) & ((!p | !q) | x1)
+	= (!x1 | p) & (!x1 | q) & (!p | !q | x1)
+
+x2 <-> (!r -> !x1) =
+	= x2 <-> (r | !x1)
+	= (x2 -> (r | !x1)) & ((r | !x1) -> x2)
+	= (!x2 | r | !x1) & (!(r | !x1) | x2)
+	= (!x2 | r | !x1) & ((!r & !x1) | x2)
+	= (!x2 | r | !x1) & (!r | x2) & (!x1 | x2)
+
+T(phi) = x2 & (!x2 | r | !x1) & (!r | x2) & (!x1 | x2) & (!x1 | p) & (!x1 | q) & (!p | !q | x1)
+	= x2 & (r | !x1) & (!x1 | p) & (!x1 | q) & (!p | !q | x1)
+	= x2 & (r | !x1) & (!(p & q) | p) & ...
+	= x2 & (r | !x1) & (!p | !q | p) & ...
+	= x2 & (r | !x1) & !q & ...
+	= x2 & (r | !x1) & !q & ...
+	= x2 & (r | !p | !q) & !q & ...
+	= x2 & (r | !p | !q) & !q & (!x1 | q) & ...
+	by same simplification idea as (!x1 | p) to !q,
+	= x2 & (r | !p | !q) & !q & !p & ...
+	= x2 & !q & !p & ...
+	= x2 & !q & !p & (!p | !q | x1)
+	= x2 & !q & !p
+	= (!r -> !x1) & !q & !p
+	= (r | !x1) & !q & !p
+	= (r | !(p & q)) & !q & !p
+	= (r | !p | !q) & !q & !p
+	= !q & !p
+
+Looks like it simplifies to just:
+	!q & !p
