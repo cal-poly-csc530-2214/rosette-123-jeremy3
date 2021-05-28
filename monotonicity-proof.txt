@@ -1,0 +1,30 @@
+Given:
+
+pos(I, phi) is a subset of pos(I', phi)
+
+To Prove:
+if I |= phi, then I' |= phi
+
+Definitions:
+A. pos(I, phi) := the literals of phi satisfied by I
+B. litCount(phi) := the total number of literals in phi
+C. I |= phi is equivalent to the statement |pos(I, phi)| = litCount(phi)
+
+Proof:
+Direct proof
+
+Given any formula phi, and interpretations I and I' such that pos(I, phi) is a subset of pos(I', phi),
+Assume I |= phi
+
+By definition C and the assumption above,
+|pos(I, phi)| = litCount(phi)
+
+pos(I, phi) is a subset of pos(I', phi), therefore |pos(I, phi)| is less than or equal to |pos(I', phi)|
+
+Since |pos(I, phi)| = litCount(phi), litCount(phi) is less than or equal to |pos(I', phi)|
+
+Since litCount(phi) is less than or equal to |pos(I', phi)|, |pos(I', phi)| >= litCount(phi)
+
+Using Lemma A and that |pos(I', phi)| >= litCount(phi),
+I' |= phi
+QED
