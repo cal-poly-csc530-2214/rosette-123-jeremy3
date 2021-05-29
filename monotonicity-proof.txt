@@ -39,13 +39,44 @@ posHelper (a:I) literals =
 	else
 		(posHelper I literals)
 
-Lemma A:
-If I |= phi, then (pos I phi) must return all literals in phi,
-therefore the following statement holds
-(length (pos I phi)) = (length (getLiterals phi))
-
 Proof:
-Direct proof
+Structural Induction
+
+Base Case:
+Given an NNF formula phi and an Interpretation I such that I |= phi.
+
+For the base case, phi is a single variable formula (e.g p) (it can also be a negated varialed, e.g. !p)
+
+Theremore (given I |= phi), I must be an interpetation containing the variable with the correct assigned value so phi is true.
+
+More concretely, (assuming var name is p)
+If phi is the formula p, then I must be [(Assignment P True)]
+If phi is the formula !p, then I must be [(Assignment P False)]
+
+Therefore pos(I, phi) is {p} or {!p} (depending on the cases above).
+
+Since pos(I, phi) is a subset of pos(I', phi), and the only literal in the formula is p, pos(I', phi) must equal pos(I, phi).
+
+Since I' contains satisfies the only literal in the formula, then I' |= phi.
+
+Induction Step (OR Case):
+Assume the following implications hold:
+((I_l |= phi_l) and (pos(I_l, phi_l) is a subset of pos(I'_l, phi_l)) -> (I'_l |= phi_l)
+((I_r |= phi_r) and (pos(I_r, phi_r) is a subset of pos(I'_r, phi_r)) -> (I'_r |= phi_r)
+
+Let phi = (phi_l OR phi_r)
+It will some be shown that I_l |= phi, pos(I_l, phi) is a subset of pos(I'_l, phi), and finally I'_l |= phi
+
+Since I_l |= phi_l, and phi = (phi_l OR phi_r), then I_l |= phi regardless of phi_r
+
+Given our induction assumption, pos(I_l, phi_l) is a subset of pos(I'_l, phi_l), then pos(I_l, phi) must also be a subset of pos(I'_l, phi). (Not exactly sure about this statement, I'm pretty sure it's true but not sure on the exact what to phrase the proof of this statement).
+
+Since I'_l |= phi_l, then I'_l |= (phi_l OR phi_r), and therefore I'_l |= phi.
+
+
+
+
+Since
 
 Given any NNF formula phi, and interpretations I and I' such that pos(I, phi) is a subset of pos(I', phi),
 Assume I |= phi
