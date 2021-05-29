@@ -65,31 +65,33 @@ Assume the following implications hold:
 ((I_r |= phi_r) and (pos(I_r, phi_r) is a subset of pos(I'_r, phi_r)) -> (I'_r |= phi_r)
 
 Let phi = (phi_l OR phi_r)
-It will some be shown that I_l |= phi, pos(I_l, phi) is a subset of pos(I'_l, phi), and finally I'_l |= phi
-
-Since I_l |= phi_l, and phi = (phi_l OR phi_r), then I_l |= phi regardless of phi_r
-
-Given our induction assumption, pos(I_l, phi_l) is a subset of pos(I'_l, phi_l), then pos(I_l, phi) must also be a subset of pos(I'_l, phi). (Not exactly sure about this statement, I'm pretty sure it's true but not sure on the exact what to phrase the proof of this statement).
 
 Since I'_l |= phi_l, then I'_l |= (phi_l OR phi_r), and therefore I'_l |= phi.
 
+Therefore the implication holds for the induction step since it was shown that I'_l |= phi is always true.
 
+Therefore the OR case of the induction step is true.
 
+Induction Step (AND Case):
+Assume the following implications hold:
+((I_l |= phi_l) and (pos(I_l, phi_l) is a subset of pos(I'_l, phi_l)) -> (I'_l |= phi_l)
+((I_r |= phi_r) and (pos(I_r, phi_r) is a subset of pos(I'_r, phi_r)) -> (I'_r |= phi_r)
 
-Since
+Let phi = (phi_l AND phi_r)
+Let I = (merge I_l I_r)
+It will now be shown that this implies the following line:
+((I |= phi) and (pos(I,phi) is a subset of pos(I', phi))) -> I' |= phi for all I'
 
-Given any NNF formula phi, and interpretations I and I' such that pos(I, phi) is a subset of pos(I', phi),
-Assume I |= phi
+Case I: (if there are contradictions in the merge between I_l and I_r)
+Then phi is not satisfiable so it is NOT true that I |= phi, therefore the hypothesis of our implication is false and the implication as a whole is true.
 
-By Lemma A and the assumption above,
-(length (pos I phi)) = (length (getLiterals phi))
+Case II:
+Given some interpretation I' such that pos(I, phi) is a subset of pos(I', phi),
+then I' still contains all the positive literals of I_l and I_r (since pos(I, phi) = pos(I_l, phi) ++ pos(I_r, phi))
+Since I' still contains all the positive literals of I, then I' satisfies I_l and I_r, and therefore I' |= phi.
 
-pos(I, phi) is a subset of pos(I', phi), therefore (length (pos I phi)) <= (length (pos I' phi)) 
+Therefore the AND case for the induction step holds.
 
-Since (length (pos I phi)) = (length (getLiterals phi)), (length (getLiterals phi)) <= (length (pos I' phi))
-
-Since an Interpretation cannot satisfy more literals than exist in the original NNF formula, (length (getLiterals phi)) = (length (pos I' phi))
-
-By Lemma B, (length (getLiterals phi)) = (length (pos I' phi)) implies I' |= phi
+Therefore the implication is true for both induction cases and for the base case, therefore by the principle of structural induction, the implication is true.
 
 QED
